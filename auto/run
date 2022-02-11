@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu
+
+trap "docker container stop \$(docker-compose ps -q)" 0
+
+docker-compose up
