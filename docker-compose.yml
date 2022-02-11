@@ -8,3 +8,14 @@ services:
       - 4000:4000
     volumes:
       - ./server:/app
+
+  postgres:
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: bharg
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - ./server/database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
