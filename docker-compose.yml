@@ -16,8 +16,10 @@ services:
       - 4000:4000
     volumes:
       - ./server:/app
+    depends_on:
+      - db
 
-  postgres:
+  db:
     image: postgres:14.1-alpine
     environment:
       POSTGRES_DB: dev
@@ -26,4 +28,22 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./server/database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+      - pg_data:/var/lib/postgresql/data
+    tty: true
+
+  migration:
+    build:
+      context: server
+    command: '/app/auto/migrate'
+    links:
+      - db
+    depends_on:
+      - db
+    env_file: ./server/.env
+    volumes:
+      - ./auto:/app
+    # environment:
+    #   - DB_HOST=database_application
+
+volumes:
+  pg_data: null

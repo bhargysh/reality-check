@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+./wait-for-it/wait-for-it.sh db:5432 -- npm run migrate
+exec "$@"
